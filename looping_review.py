@@ -37,8 +37,8 @@ while w > x or w > y or w > z or x > y or x > z or y > z:
         y = z
         z = temp
 
-
         print(w, x, y, z)
+
 
 #Question 2
 
@@ -52,6 +52,7 @@ def powerOf2(num):
     print (f'2^{p} == {2**p} ')
 
 powerOf2(172319)
+
 
 #Question 3
 
@@ -70,3 +71,37 @@ def calculateWindChill():
         print("\n")
 
 calculateWindChill()
+
+
+#Question 4
+
+def hailstoneNumbers():
+
+    for num in range(1, 31):
+        calculateHailstones(num)
+        print("-.-.-.-.-.-.-.-.-.-")
+
+
+def calculateHailstones(n):
+
+    print(f'Number: {n}\n')
+    steps = 0
+    hailstones = [n]
+
+    while n != 1 and max(hailstones) != 1:
+
+        if n % 2 == 0:
+            n = n/2
+            hailstones.append(n)
+            steps += 1
+
+        elif n % 2 == 1:
+            n = n*3 + 1
+            hailstones.append(n)
+            steps += 1
+
+    print(f'Number of steps: {steps}')
+    maxHailstone = max(hailstones)
+    print(f'Maximum value in path: {maxHailstone:.0f}')
+
+hailstoneNumbers()
