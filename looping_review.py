@@ -55,7 +55,7 @@ powerOf2(172319)
 
 #Question 3
 
-def calculateWindChill(t, v):
+def calculateWindChill():
     
     print("Calm", end='\t')
     for temp in range(40, -46, -5):
@@ -69,4 +69,4 @@ def calculateWindChill(t, v):
             print(f'{windChill:.0f}', end="\t")
         print("\n")
 
-calculateWindChill(1, 2)
+calculateWindChill()
