@@ -1,0 +1,17 @@
+def parse_programs(filename):
+
+    with open(filename, 'r') as file_in:
+        
+        for line in file_in:
+            main_info = line.strip().split(':')
+            programs = main_info[1].strip().split(',')
+
+            university_info = main_info[0].strip().split(',')
+
+            for program in programs:
+                program_info = [university_info[0].strip(), university_info[1].strip(), university_info[2].strip(), program.strip()]
+                print(program_info)
+
+    file_in.close()
+
+parse_programs("/Users/saanvi/workspace/projects/ics4u1-practice-exercises/diff-structures-exercises/university-programs.txt")
