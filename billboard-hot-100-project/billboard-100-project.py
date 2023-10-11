@@ -87,8 +87,8 @@ def write_to_file(filename, song_dict):
             for song_chart in song_charts:
                 additional_artists = ""
                 if song_chart['Artist'] != song_chart['Additional_Artists']:
-                    additional_details = song_chart['Additional_Artists']
-                    file_out.write(f'{song},{song_chart["Artist_ID"]},{song_chart["Artist"]},{song_chart["Song"]},{song_chart["Date"]},{song_chart["Weeks_on_Chart"]},{song_chart["Peak_Rank"]},{additional_artists}\n')
+                    additional_artists = song_chart['Additional_Artists']
+                file_out.write(f'{song},{song_chart["Artist_ID"]},{song_chart["Artist"]},{song_chart["Song"]},{song_chart["Date"]},{song_chart["Weeks_on_Chart"]},{song_chart["Peak_Rank"]},{additional_artists}\n')
 
     file_out.close()
 
