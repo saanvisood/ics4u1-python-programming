@@ -3,6 +3,9 @@
 
 import csv
 
+folder_path = "/Users/saanvi/workspace/projects/ics4u1-practice-exercises/billboard-hot-100-project/"
+
+
 def parse_artists(filename):
     song_dict = {}
 
@@ -20,12 +23,11 @@ def parse_artists(filename):
             id_dict['Song_ID'] = song_id
             id_dict['Artist_ID'] = artist_id
             id_dict['Ordinal'] = ordinal
+            id_dict['Artist'] = artist
 
             if song_id not in song_dict:
-                song_dict[song_id] = []
-            #     artist_dict[artist].append(id_dict)
-            # else:
-            #     artist_dict[artist].append(id_dict)
+                song_dict[song_id] = {}
+                song_dict[song_id] = id_dict
 
 
     file_in.close()
@@ -34,7 +36,7 @@ def parse_artists(filename):
 
 
 def parse_tracks(filename, song_dict):
-
+    artist_song_dict = {}
     with open (filename, 'r') as file_in:
 
         header = file_in.readline()
@@ -50,26 +52,52 @@ def parse_tracks(filename, song_dict):
             weeks_on_chart = line[6]
             peak_rank = line[-1]
 
+            if song_id not in artist_song_dict:
+                artist_song_dict[song_id] = []
+                
+            song_info_dict['Song'] = song
+            song_info_dict['Additional_Artists'] = artist
+            song_info_dict['Date'] = date
+            song_info_dict['Weeks_on_Chart'] = weeks_on_chart
+            song_info_dict['Peak_Rank'] = peak_rank
+
             if song_id in song_dict:
+                existing_artist = song_dict[song_id]
+                song_info_dict['Artist_ID'] = existing_artist['Artist_ID']
+                song_info_dict['Artist'] = existing_artist['Artist']
 
-                song_info_dict['Song'] = song
-                song_info_dict['Artist'] = artist
-                song_info_dict['Date'] = date
-                song_info_dict['Weeks_on_Chart'] = weeks_on_chart
-                song_info_dict['Peak_Rank'] = peak_rank
-
-                existing_songs_list = song_dict[song_id]
-                existing_songs_list.append(song_info_dict)
+            existing_songs_list = artist_song_dict[song_id]
+            existing_songs_list.append(song_info_dict)
 
     file_in.close()
 
-    return song_dict
+    return artist_song_dict
+
+
+def write_to_file(filename, song_dict):
+    artist_dict = {}
+
+    with open (filename, 'w') as file_out:
+
+        header = (f'song_id,artist_id,artist,song,date,weeks_on_chart,peak_rank,additional_artists\n')
+        file_out.write(header)
+
+        for song in song_dict:
+            song_charts = song_dict[song]
+            for song_chart in song_charts:
+                additional_artists = ""
+                if song_chart['Artist'] != song_chart['Additional_Artists']:
+                    additional_details = song_chart['Additional_Artists']
+                    file_out.write(f'{song},{song_chart["Artist_ID"]},{song_chart["Artist"]},{song_chart["Song"]},{song_chart["Date"]},{song_chart["Weeks_on_Chart"]},{song_chart["Peak_Rank"]},{additional_artists}\n')
+
+    file_out.close()
 
 
 def main():
 
-    song_dict = parse_artists("/Users/saanvi/Downloads/billboard-hot-100-project/billboard-hot-100-artists.csv")
-    parse_tracks("/Users/saanvi/Downloads/billboard-hot-100-project/billboard-hot-100-tracks.csv", song_dict)
+    song_dict = parse_artists(folder_path+"billboard-hot-100-artists.csv")
+    song_info_dict = parse_tracks(folder_path+"billboard-hot-100-tracks.csv", song_dict)
+    write_to_file(folder_path+"new-billboard-data.csv", song_info_dict)
 
 
 main()
